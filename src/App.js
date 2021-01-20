@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchContacts } from './redux/contacts/contacts-operations';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import Loader from 'react-loader-spinner';
+
 import Layout from './components/Layout/Layout';
 import Section from './components/Layout/Section';
 import ContactForm from './components/ContactForm/ContactForm';
@@ -9,12 +12,11 @@ import Filter from './components/Filter/Filter';
 
 export default function App() {
   const contacts = useSelector(state => state.contacts);
+  const isLoading = useSelector(state => state.isLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchContacts());
-
-    // localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [dispatch]);
 
   return (
@@ -22,6 +24,10 @@ export default function App() {
       <Section title="Phonebook">
         <ContactForm />
       </Section>
+
+      {isLoading ? (
+        <Loader type="Rings" color="#00BFFF" height={80} width={80} />
+      ) : null}
 
       {contacts.length ? (
         <Section title="Contacts">
@@ -32,9 +38,3 @@ export default function App() {
     </Layout>
   );
 }
-
-// const mapStateToProps = state => ({
-//   contacts: state.contacts,
-// });
-
-// export default connect(mapStateToProps)(App);

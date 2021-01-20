@@ -50,6 +50,7 @@ export default function ContactsForm() {
           name="phone"
           id="phone"
           value={phone}
+          pattern="[+]7\s[\(]\d{3}[\)]\s\d{3}[\-]\d{2}[\-]\d{2}"
           onChange={e => setPhone(e.target.value)}
         />
         <button type="submit" disabled={!(name && phone)}>
