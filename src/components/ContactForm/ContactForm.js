@@ -3,25 +3,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import propTypes from 'prop-types';
 import s from './ContactForm.module.css';
 import { addContact } from '../../redux/contacts/contacts-operations';
+import { getIsAdded } from '../../redux/contacts/contacts-selectors';
 
 export default function ContactsForm() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const { contacts } = useSelector(state => state);
+  const isAdded = useSelector(getIsAdded);
   const dispatch = useDispatch();
-
-  const onAddContacts = (name, phone) => dispatch(addContact(name, phone));
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    const isAdded = name =>
-      contacts.map(contact => contact.name).includes(name);
-
     if (isAdded(name)) {
       return alert(`${name} is already in contacts`);
     } else {
-      onAddContacts(name, phone);
+      dispatch(addContact(name, phone));
     }
 
     setName('');
@@ -50,7 +46,6 @@ export default function ContactsForm() {
           name="phone"
           id="phone"
           value={phone}
-          pattern="[+]7\s[\(]\d{3}[\)]\s\d{3}[\-]\d{2}[\-]\d{2}"
           onChange={e => setPhone(e.target.value)}
         />
         <button type="submit" disabled={!(name && phone)}>
